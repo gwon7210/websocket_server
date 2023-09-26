@@ -7,6 +7,8 @@ public class ChatMessage {
     private MessageType type;
     private String content;
     private String sender;
+    private Long roomid;
+
 
     public enum MessageType {
         CHAT,
@@ -37,4 +39,13 @@ public class ChatMessage {
     public void setSender(String sender) {
         this.sender = sender;
     }
+
+    public Long getRoomid() {
+        return roomid;
+    }
+
+    public void setRoomid(Long roomid) {
+        this.roomid = roomid;
+    }
+
 }
