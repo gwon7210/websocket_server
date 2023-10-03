@@ -2,6 +2,7 @@ package com.example.websocketdemo.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.socket.config.annotation.*;
 
 /**
@@ -18,18 +19,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.setApplicationDestinationPrefixes("/app");
-//        registry.enableSimpleBroker("/topic");   // Enables a simple in-memory broker
+        registry.setPathMatcher(new AntPathMatcher(".")); // url을 chat/room/3 -> chat.room.3으로 참조하기 위한 설정
+        registry.setApplicationDestinationPrefixes("/pub");
+
+        //registry.enableSimpleBroker("/sub");
+        registry.enableStompBrokerRelay("/queue", "/topic", "/exchange", "/amq/queue");
 
 
-        //   Use this for enabling a Full featured broker like RabbitMQ
 
-        /*
-        registry.enableStompBrokerRelay("/topic")
-                .setRelayHost("localhost")
-                .setRelayPort(61613)
-                .setClientLogin("guest")
-                .setClientPasscode("guest");
-        */
     }
 }

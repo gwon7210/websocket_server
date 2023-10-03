@@ -16,6 +16,7 @@ var colors = [
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
 ];
 
+
 function connect(event) {
     username = document.querySelector('#name').value.trim();
 
@@ -28,18 +29,19 @@ function connect(event) {
 
         stompClient.connect({}, onConnected, onError);
     }
+
     event.preventDefault();
 }
 
 
 function onConnected() {
     // Subscribe to the Public Topic
-    stompClient.subscribe('/topic/public/3', onMessageReceived);
+    stompClient.subscribe('/exchange/chat.exchange/room.3', onMessageReceived);
 
     // Tell your username to the server
-    stompClient.send("/app/chat.addUser",
+    stompClient.send("/pub/chat.enter.3",
         {},
-        JSON.stringify({sender: username, type: 'JOIN', roomid: 3})
+        JSON.stringify({sender: username, type: 'JOIN', roomid: 1})
     )
 
     connectingElement.classList.add('hidden');
@@ -63,7 +65,7 @@ function sendMessage(event) {
             roomid: 3
         };
 
-        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+        stompClient.send("/pub/chat.message.3", {}, JSON.stringify(chatMessage));
         messageInput.value = '';
     }
     event.preventDefault();
