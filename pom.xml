@@ -81,6 +81,13 @@
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-resolver-dns-native-macos</artifactId>
+			<version>4.1.68.Final</version>
+			<classifier>osx-aarch_64</classifier>
+		</dependency>
+
 	</dependencies>
 
 	<build>
