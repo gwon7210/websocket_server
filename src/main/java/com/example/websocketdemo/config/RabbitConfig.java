@@ -18,22 +18,21 @@ import org.springframework.context.annotation.Configuration;
 @EnableRabbit
 public class RabbitConfig {
 
-    private static final String CHAT_QUEUE_NAME = "chat.queue";
-    private static final String CHAT_EXCHANGE_NAME = "chat.exchange";
-    private static final String ROUTING_KEY = "room.*";
+    private static final String KWORKS_DOWONLOAD_EXCEL_QUEUE_NAME = "kworks.download.excel.queue";
+    private static final String KWORKS_DOWONLOAD_EXCEL_EXCHANGE_NAME = "kworks.download.excel.exchange";
+    private static final String KWORKS_DOWONLOAD_EXCEL_ROUTING_KEY = "kworks.download.excel.*";
 
-    //Queue 등록
-    @Bean
-    public Queue queue(){ return new Queue(CHAT_QUEUE_NAME, true); }
 
-    //Exchange 등록
+    /** excel download */
     @Bean
-    public TopicExchange exchange(){ return new TopicExchange(CHAT_EXCHANGE_NAME); }
+    public Queue excelDownloadQueue(){ return new Queue(KWORKS_DOWONLOAD_EXCEL_QUEUE_NAME, true); }
 
-    //Exchange와 Queue 바인딩
     @Bean
-    public Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY);
+    public TopicExchange excelDownloadExchange(){ return new TopicExchange(KWORKS_DOWONLOAD_EXCEL_EXCHANGE_NAME); }
+
+    @Bean
+    public Binding excelDownloadBinding(Queue excelDownloadQueue, TopicExchange excelDownloadExchange) {
+        return BindingBuilder.bind(excelDownloadQueue).to(excelDownloadExchange).with(KWORKS_DOWONLOAD_EXCEL_ROUTING_KEY);
     }
 
     /* messageConverter를 커스터마이징 하기 위해 Bean 새로 등록 */
@@ -41,7 +40,6 @@ public class RabbitConfig {
     public RabbitTemplate rabbitTemplate(){
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
         rabbitTemplate.setMessageConverter(jsonMessageConverter());
-        rabbitTemplate.setRoutingKey(CHAT_QUEUE_NAME);
         return rabbitTemplate;
     }
 
@@ -49,7 +47,6 @@ public class RabbitConfig {
     public SimpleMessageListenerContainer container(){
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory());
-        container.setQueueNames(CHAT_QUEUE_NAME);
         container.setMessageListener(null);
         return container;
     }
