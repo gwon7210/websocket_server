@@ -27,7 +27,7 @@ function connect(event) {
         var socket = new SockJS('/ws_keywert');
         stompClient = Stomp.over(socket);
 
-        stompClient.connect({}, onConnected, onError);
+        stompClient.connect({Authorization:"KimSeongHyeon JWT TOKEN"}, onConnected, onError);
     }
 
     event.preventDefault();
@@ -36,13 +36,13 @@ function connect(event) {
 
 function onConnected() {
     // Subscribe to the Public Topic
-    stompClient.subscribe('/exchange/chat.exchange/room.2', onMessageReceived);
+    stompClient.subscribe('/exchange/kworks.download.excel.exchange/kworks.download.excel.KimSeongHyeon', onMessageReceived);
 
-    // Tell your username to the server
-    stompClient.send("/pub/chat.enter.2",
-        {},
-        JSON.stringify({sender: username, type: 'JOIN', roomid: 1})
-    )
+    // // Tell your username to the server
+    // stompClient.send("/pub/chat.enter.3",
+    //     {},
+    //     JSON.stringify({sender: username, type: 'JOIN', roomid: 1})
+    // )
 
     connectingElement.classList.add('hidden');
 }
@@ -62,10 +62,10 @@ function sendMessage(event) {
             sender: username,
             content: messageInput.value,
             type: 'CHAT',
-            roomid: 2
+            roomid: 3
         };
 
-        stompClient.send("/pub/chat.message.2", {}, JSON.stringify(chatMessage));
+        stompClient.send("/pub/kworks.download.excel.KimSeongHyeon", {}, JSON.stringify(chatMessage));
         messageInput.value = '';
     }
     event.preventDefault();

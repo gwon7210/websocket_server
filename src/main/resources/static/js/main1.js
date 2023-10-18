@@ -27,7 +27,7 @@ function connect(event) {
         var socket = new SockJS('/ws_keywert');
         stompClient = Stomp.over(socket);
 
-        stompClient.connect({}, onConnected, onError);
+        stompClient.connect({Authorization:"ParkJiWon JWT TOKEN"}, onConnected, onError);
     }
 
     event.preventDefault();
@@ -36,13 +36,13 @@ function connect(event) {
 
 function onConnected() {
     // Subscribe to the Public Topic
-    stompClient.subscribe('/exchange/chat.exchange/room.1', onMessageReceived);
+    stompClient.subscribe('/exchange/kworks.download.excel.exchange/kworks.download.excel.ParkJiWon', onMessageReceived);
 
-    // Tell your username to the server
-    stompClient.send("/pub/chat.enter.1",
-        {},
-        JSON.stringify({sender: username, type: 'JOIN', roomid: 1})
-    )
+    // // Tell your username to the server
+    // stompClient.send("/pub/chat.enter.3",
+    //     {},
+    //     JSON.stringify({sender: username, type: 'JOIN', roomid: 1})
+    // )
 
     connectingElement.classList.add('hidden');
 }
@@ -62,10 +62,10 @@ function sendMessage(event) {
             sender: username,
             content: messageInput.value,
             type: 'CHAT',
-            roomid: 1
+            roomid: 3
         };
 
-        stompClient.send("/pub/chat.message.1", {}, JSON.stringify(chatMessage));
+        stompClient.send("/pub/kworks.download.excel.ParkJiWon", {}, JSON.stringify(chatMessage));
         messageInput.value = '';
     }
     event.preventDefault();
